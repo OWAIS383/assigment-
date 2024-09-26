@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .container {
+        display: block;
+    }
+
+    input {
+        padding: 20px 30px;
+        margin: auto;
+        width: 90vw;
+    }
+    button{
+        position: relative;
+        left: 45%;
+        margin-top: 50px;
+        padding: 20px 50px;
+        background-color: orange;
+        outline-style: none;
+        border: none;
+    }
+    h1{
+        text-align: center;
+        margin: 30px;
+    }
+    #details{
+        text-align: center;
+        display: block;
+        margin: 50px;
+        padding: 50px;
+    }
+    
+</style>
+
+<!-- <body>
+    <h1>Search Your Favorite Movie</h1>
+    <div class="container">
+        <input type="text" placeholder="Movie Name..............." id="movie"><br>
+        <button onclick="movie()">Submit</button>
+    </div>
+
+    <div id="details">
+
+    </div>
+</body>
+<script>
+    function movie() {
+        var movie = document.getElementById("movie").value;
+
+        fetch(`http://www.omdbapi.com/?t=${moviename}&apikey=730b9f11`).then((response) => response.json).then(data => {
+            var Title, Year, Rated, Released, Runtime, Genre, Director, Writer, Actors, Plot, Language, Country, Awards, Poster = data;
+
+            document.getElementById("details").innerHTML = `
+                <img src= ${Poster}/>
+                <h2>${Title}(${Year})</h2>
+                <ul>
+                    <li><strong>Released:  </strong>${Released}</li>
+                    <li><strong>Genre:  </strong>${Genre}</li>
+                    <li><strong>Director:  </strong>${Director}</li>
+                    <li><strong>Writer:  </strong>${Writer}</li>
+                    <li><strong>Language:  </strong>${Language}</li>
+                    <li><strong>Actors:  </strong>${Actors}</li>
+                    <li><strong>Awards:  </strong>${Awards}</li>
+                    <li><strong>Plot:  </strong>${Plot}</li>
+                    <li><strong>Country:  </strong>${Country}</li>
+                </ul>
+                `
+        })
+    }
+</script> -->
+
+
+
+<!-- GPT -->
+<body>
+    <h1>Search Your Favorite Movie</h1>
+    <div class="container">
+        <input type="text" placeholder="Movie Name..............." id="movie"><br>
+        <button onclick="fetchMovie()">Submit</button>
+    </div>
+
+    <div id="details"></div>
+
+    <script>
+        function fetchMovie() {
+            var movieName = document.getElementById("movie").value;
+
+            fetch(`http://www.omdbapi.com/?t=${encodeURIComponent(movieName)}&apikey=730b9f11`)
+                .then(response => response.json()) // Correctly call .json() with parentheses
+                .then(data => {
+                    if (data.Response === "True") { // Check if the movie was found
+                        const { Title, Year, Rated, Released, Runtime, Genre, Director, Writer, Actors, Plot, Language, Country, Awards, Poster } = data;
+
+                        document.getElementById("details").innerHTML = `
+                            <img src="${Poster}" alt="${Title} Poster"/>
+                            <h2>${Title} (${Year})</h2>
+                            <ul>
+                                <li><strong>Released:</strong> ${Released}</li>
+                                <li><strong>Genre:</strong> ${Genre}</li>
+                                <li><strong>Director:</strong> ${Director}</li>
+                                <li><strong>Writer:</strong> ${Writer}</li>
+                                <li><strong>Language:</strong> ${Language}</li>
+                                <li><strong>Actors:</strong> ${Actors}</li>
+                                <li><strong>Awards:</strong> ${Awards}</li>
+                                <li><strong>Plot:</strong> ${Plot}</li>
+                                <li><strong>Country:</strong> ${Country}</li>
+                            </ul>
+                        `;
+                    } else {
+                        document.getElementById("details").innerHTML = `<p>Movie not found!</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    document.getElementById("details").innerHTML = `<p>Error fetching movie details!</p>`;
+                });
+        }
+    </script>
+</body>
+
+
+</html>
